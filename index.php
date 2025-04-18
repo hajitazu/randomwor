@@ -8,6 +8,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Ambil pilihan dari sesi jika ada
 $choices = isset($_SESSION['choices']) ? $_SESSION['choices'] : '';
+
+// Pilihan acak
+$randomChoice = '';
+if (!empty($choices)) {
+    $choicesArray = explode("\n", $choices);
+    $randomChoice = $choicesArray[array_rand($choicesArray)];
+}
 ?>
 
 <!DOCTYPE html>
@@ -16,27 +23,20 @@ $choices = isset($_SESSION['choices']) ? $_SESSION['choices'] : '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Pilih Pilihan</title>
+    <title>Pilih Acak</title>
 </head>
 <body>
     <div class="container">
-        <h1>Pilih Pilihan Anda</h1>
+        <h1>Pilih Acak dari Pilihan Anda</h1>
         <form method="POST" action="">
             <textarea name="choices" rows="10" cols="30" placeholder="Masukkan pilihan, pisahkan dengan baris baru..."><?php echo htmlspecialchars($choices); ?></textarea><br>
-            <input type="submit" value="Simpan Pilihan">
+            <input type="submit" value="Pilih Acak">
         </form>
 
-        <?php
-        if (!empty($choices)) {
-            $choicesArray = explode("\n", $choices);
-            echo "<h2>Daftar Pilihan Anda:</h2>";
-            echo "<ul>";
-            foreach ($choicesArray as $choice) {
-                echo "<li>" . htmlspecialchars($choice) . "</li>";
-            }
-            echo "</ul>";
-        }
-        ?>
+        <?php if ($randomChoice): ?>
+            <h2>Pilihan Acak Anda:</h2>
+            <div class="choice"><?php echo htmlspecialchars($randomChoice); ?></div>
+        <?php endif; ?>
     </div>
 </body>
 </html>
